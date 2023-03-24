@@ -1,0 +1,70 @@
+﻿@model Admin.App.ViewModels.ProductViewModel
+
+@{
+    ViewData["Title"] = "Edit" + Model.Name;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h4>ProductViewModel</h4>
+<hr />
+<div class="row">
+    <form enctype="multipart/form-data" asp-action="Edit">
+        <div class="col-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="VendorId" class="control-label"></label>
+                <span>@Model.Vendor.Name</span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Value" class="control-label"></label>
+                <input asp-for="Value" class="form-control" />
+                <span asp-validation-for="Value" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                </label>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <h4>current image</h4>
+            <img class="w-25" src="~/img/@Model.Image" />
+            <label>
+                New image
+            <input type="file" asp-for="ImageUpload" class="form-control" />
+            </label>
+        </div>
+        <div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a class="btn btn-info" href="javascript:window.history.back();">Back</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
