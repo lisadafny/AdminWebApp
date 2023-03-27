@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+<link href="~/css/product.css" rel="stylesheet" />
 <h1>Index</h1>
 
 <p>
@@ -20,9 +20,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Value)
@@ -47,9 +44,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Image)
             </td>
             <td>
                 @item.Value.ToString("C")
