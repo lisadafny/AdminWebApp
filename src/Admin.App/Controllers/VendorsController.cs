@@ -78,7 +78,7 @@ namespace Admin.App.Controllers
 
             var vendor = _mapper.Map<Vendor>(vendorViewModel);
             await _vendorRepository.Update(vendor);
-            return RedirectToAction(nameof(Index));
+            return View(vendorViewModel);
 
         }
 
