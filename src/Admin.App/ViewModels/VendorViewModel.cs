@@ -24,5 +24,7 @@ namespace Admin.App.ViewModels
         public bool Active { get; set; }
 
         public IEnumerable<ProductViewModel> Products { get; set; }
+        public ReturnViewModel Result { get; set; }
+
     }
 }

@@ -78,6 +78,8 @@ namespace Admin.App.Controllers
 
             var vendor = _mapper.Map<Vendor>(vendorViewModel);
             await _vendorRepository.Update(vendor);
+            var result = new ReturnViewModel(true, $"Updated {vendor.Name} with success!");
+            vendorViewModel.Result = result;
             return View(vendorViewModel);
 
         }

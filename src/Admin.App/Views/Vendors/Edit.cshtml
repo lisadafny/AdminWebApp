@@ -33,6 +33,7 @@
                     <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
                 </label>
             </div>
+            <partial name="../Shared/_MessagePartial" model="Model.Result"/>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

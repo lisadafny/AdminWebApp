@@ -1,0 +1,17 @@
+﻿@model Admin.App.ViewModels.ReturnViewModel
+@if(Model != null)
+{
+<div class="row">
+    @if(Model.Sucess)
+    {
+    <div class="col">
+                <p class="bg-success rounded-2 p-3 mt-3 text-light">@Model.Message</p>
+        </div>
+    } else
+    {
+        <div class="col">
+                <p class="bg-warning rounded-2 p-3 mt-3 text-light">@Model.Message</p>
+        </div>
+    }
+</div>
+}
