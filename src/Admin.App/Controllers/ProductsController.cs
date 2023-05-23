@@ -155,5 +155,11 @@ namespace Admin.App.Controllers
             }
             return true;
         }
+
+        public FileResult DownloadPdf()
+        {
+            MemoryStream ms = new MemoryStream();
+            return File(ms.ToArray(), "application/pdf", "Products.pdf");
+        }
     }
 }
