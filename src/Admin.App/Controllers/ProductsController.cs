@@ -3,6 +3,7 @@ using Admin.App.ViewModels;
 using Admin.Business.Interfaces;
 using AutoMapper;
 using Admin.Business.Models;
+using System.Text;
 
 namespace Admin.App.Controllers
 {
@@ -159,6 +160,11 @@ namespace Admin.App.Controllers
         public FileResult DownloadPdf()
         {
             MemoryStream ms = new MemoryStream();
+            UnicodeEncoding uniEncoding = new UnicodeEncoding();
+            byte[] firstString = uniEncoding.GetBytes(
+            "Some products are:");
+            ms.Write(firstString, 0, firstString.Length);
+
             return File(ms.ToArray(), "application/pdf", "Products.pdf");
         }
     }
