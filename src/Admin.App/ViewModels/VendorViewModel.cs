@@ -13,7 +13,9 @@ namespace Admin.App.ViewModels
         public string Name { get; set; }
 
         [Required(ErrorMessage = "{0} field is required")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "{0} must be numeric")]
         [StringLength(14, ErrorMessage = "{0} field must have between {2} and {1} characters", MinimumLength = 11)]
+        
         public string Document { get; set; }
 
         [DisplayName("Type")]

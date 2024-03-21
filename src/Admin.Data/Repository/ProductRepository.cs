@@ -25,7 +25,7 @@ namespace Admin.Data.Repository
 
         public async Task<Product> GetProductVendor(Guid id)
         {
-            return await _dbContext.Products.AsNoTracking().Include(v => v.Vendor).FirstOrDefaultAsync(v => v.Id == id);
+            return await _dbContext.Products.AsNoTracking().FirstOrDefaultAsync(v => v.Id == id);
         }
     }
 }

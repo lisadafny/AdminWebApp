@@ -3,17 +3,21 @@ using Admin.App.ViewModels;
 using Admin.Business.Interfaces;
 using AutoMapper;
 using Admin.Business.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Admin.App.Controllers
 {
+    [Authorize]
     public class VendorsController : BaseController
     {
-        public IVendorRepository _vendorRepository { get; set; }
+        private readonly IVendorRepository _vendorRepository;
+        private readonly IAddressRepository _addressRepository;
         private readonly IMapper _mapper;
-        public VendorsController(IVendorRepository vendorRepository,
-            IMapper mapper)
+        public VendorsController(IVendorRepository vendorRepository, IAddressRepository addressRepository,
+        IMapper mapper)
         {
             _vendorRepository = vendorRepository;
+            _addressRepository = addressRepository;
             _mapper = mapper;
         }
 
@@ -27,7 +31,7 @@ namespace Admin.App.Controllers
         public async Task<IActionResult> Details(Guid id)
         {
 
-            var vendorViewModel = GetVendorAddress(id);
+            var vendorViewModel = await GetVendorAddress(id);
 
             if (vendorViewModel == null)
             {
@@ -86,7 +90,7 @@ namespace Admin.App.Controllers
 
         public async Task<IActionResult> Delete(Guid id)
         {
-            var vendorViewModel = GetVendorAddress(id);
+            var vendorViewModel = await GetVendorAddress(id);
 
             if (vendorViewModel == null)
             {
@@ -100,9 +104,11 @@ namespace Admin.App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var vendorViewModel = GetVendorAddress(id);
+            var vendorViewModel = await GetVendorAddress(id);
 
             if (vendorViewModel == null) return NotFound();
+
+            await _addressRepository.Delete(vendorViewModel.Address.Id);
 
             await _vendorRepository.Delete(id);
 

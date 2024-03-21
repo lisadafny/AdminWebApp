@@ -16,6 +16,11 @@ namespace Admin.Data.Repository
         {
         }
 
+        public async Task<IEnumerable<Vendor>> GetAll() 
+        {
+            return await _dbContext.Vendors.AsNoTracking().Include(x => x.Products).AsNoTracking().ToListAsync();
+        }
+
         public async Task<Vendor> GetVendorAddress(Guid id)
         {
             return await _dbContext.Vendors.AsNoTracking().Include(v => v.Address).FirstOrDefaultAsync(v => v.Id == id);

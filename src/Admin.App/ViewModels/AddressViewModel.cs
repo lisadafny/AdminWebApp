@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Admin.App.ViewModels
@@ -16,8 +17,10 @@ namespace Admin.App.ViewModels
         [StringLength(50, ErrorMessage = "{0} field must have between {2} and {1} characters", MinimumLength = 1)]
         public string Number { get; set; }
 
+        [DisplayName("Additional Info")]
         public string AdditionalInfo { get; set; }
 
+        [DisplayName("Postal Code")]
         [Required(ErrorMessage = "{0} field is required")]
         [StringLength(8, ErrorMessage = "{0} field must have {1} characters", MinimumLength = 8)]
         public string PostalCode { get; set; }

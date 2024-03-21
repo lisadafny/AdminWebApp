@@ -4,9 +4,11 @@ using Admin.Business.Interfaces;
 using AutoMapper;
 using Admin.Business.Models;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Admin.App.Controllers
 {
+    [Authorize]
     public class ProductsController : BaseController
     {
         private readonly IProductRepository _productRepository;

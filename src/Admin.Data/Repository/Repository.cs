@@ -34,7 +34,7 @@ namespace Admin.Data.Repository
             await SaveChanges();
         }
 
-        public async Task<IEnumerable<IEntity>> GetAll()
+        public virtual async Task<IEnumerable<IEntity>> GetAll()
         {
             return await _dbSet.ToListAsync();
         }
