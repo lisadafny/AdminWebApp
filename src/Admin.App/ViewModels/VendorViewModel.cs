@@ -20,6 +20,15 @@ namespace Admin.App.ViewModels
 
         [DisplayName("Type")]
         public int VendorType { get; set; }
+        public string VendorTypeDescription
+        {
+            get
+            {
+                if (VendorType == 1) return "Person";
+                if (VendorType == 2) return "Entity";
+                return "Invalid";
+            }
+        }
         public AddressViewModel Address { get; set; }
 
         [DisplayName("Active?")]

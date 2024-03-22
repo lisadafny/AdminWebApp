@@ -11,22 +11,22 @@ namespace Admin.App.Controllers
     [Authorize]
     public class ProductsController : BaseController
     {
-        private readonly IProductRepository _productRepository;
-        private readonly IVendorRepository _vendorRepository;
+        private readonly IProductService _productService;
+        private readonly IVendorService _vendorService;
         private readonly IMapper _mapper;
 
-        public ProductsController(IProductRepository productRepository,
+        public ProductsController(IProductService productService,
             IMapper mapper,
-            IVendorRepository vendorRepository)
+            IVendorService vendorService)
         {
-            _productRepository = productRepository;
+            _productService = productService;
             _mapper = mapper;
-            _vendorRepository = vendorRepository;
+            _vendorService = vendorService;
         }
 
         public async Task<IActionResult> Index()
         {
-            return View(_mapper.Map<IEnumerable<ProductViewModel>>(await _productRepository.GetProductsVendors()));
+            return View(_mapper.Map<IEnumerable<ProductViewModel>>(await _productService.GetProductsVendors()));
         }
 
         public async Task<IActionResult> Details(Guid id)
@@ -59,7 +59,7 @@ namespace Admin.App.Controllers
 
             productViewModel.Image = imgId + productViewModel.ImageUpload.FileName;
 
-            await _productRepository.Add(_mapper.Map<Product>(productViewModel));
+            await _productService.Add(_mapper.Map<Product>(productViewModel));
 
             return RedirectToAction("Index");
         }
@@ -87,7 +87,7 @@ namespace Admin.App.Controllers
             productViewModel.Image = updateProduct.Image;
             if (!ModelState.IsValid) return View(productViewModel);
 
-            if(productViewModel.ImageUpload != null)
+            if (productViewModel.ImageUpload != null)
             {
                 var imgId = Guid.NewGuid() + "_";
                 if (!await UploadArquivo(productViewModel.ImageUpload, imgId)) return View(productViewModel);
@@ -99,7 +99,7 @@ namespace Admin.App.Controllers
             updateProduct.Value = productViewModel.Value;
             updateProduct.Active = productViewModel.Active;
 
-            await _productRepository.Update(_mapper.Map<Product>(updateProduct));
+            await _productService.Update(_mapper.Map<Product>(updateProduct));
             return RedirectToAction(nameof(Index));
         }
 
@@ -123,36 +123,37 @@ namespace Admin.App.Controllers
 
             if (productViewModel == null) return NotFound();
 
-            await _productRepository.Delete(id);
+            await _productService.Delete(id);
 
             return RedirectToAction(nameof(Index));
         }
 
         private async Task<ProductViewModel> GetProduct(Guid id)
         {
-            var product = _mapper.Map<ProductViewModel>(await _productRepository.GetProductVendor(id));
-            product.Vendors = _mapper.Map<IEnumerable<VendorViewModel>>(await _vendorRepository.GetAll());
+            var product = _mapper.Map<ProductViewModel>(await _productService.GetProductVendor(id));
+            product.Vendors = _mapper.Map<IEnumerable<VendorViewModel>>(await _vendorService.GetAll());
             return product;
         }
         private async Task<ProductViewModel> PopulateVendors(ProductViewModel product)
         {
-            product.Vendors = _mapper.Map<IEnumerable<VendorViewModel>>(await _vendorRepository.GetAll());
+            product.Vendors = _mapper.Map<IEnumerable<VendorViewModel>>(await _vendorService.GetAll());
             return product;
         }
 
         private async Task<bool> UploadArquivo(IFormFile image, string imgId)
         {
-            if (image.Length <= 0) return false;
+
+            if (image == null || image?.Length <= 0) return false;
 
             var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", imgId + image.FileName);
 
-            if(System.IO.File.Exists(path))
+            if (System.IO.File.Exists(path))
             {
                 ModelState.AddModelError(string.Empty, "This file name is already beeing used!");
                 return false;
             }
 
-            using(var stream = new FileStream(path, FileMode.Create))
+            using (var stream = new FileStream(path, FileMode.Create))
             {
                 await image.CopyToAsync(stream);
             }

@@ -23,7 +23,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="VendorType" class="control-label"></label>
-                <input asp-for="VendorType" class="form-control" />
+                <label class="d-block">
+                    <input type="radio" value="1" asp-for="VendorType" checked  /> Person
+                </label>
+                <label class="d-block">
+                    <input type="radio" value="2" asp-for="VendorType"/> Entity
+                </label>
                 <span asp-validation-for="VendorType" class="text-danger"></span>
             </div>
 

@@ -2,14 +2,13 @@
 @model IEnumerable<Admin.App.ViewModels.ProductViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Products";
 }
 <link href="~/css/product.css" rel="stylesheet" />
-<h1>Index</h1>
-<a class="btn" asp-action="DownloadPdf"><i class="bi bi-download"></i></a>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h1>Products</h1>
+
+<a asp-action="Create" class="btn btn-success">Create New</a>
+
 <table class="table">
     <thead>
         <tr>
@@ -35,32 +34,33 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <img src="~/img/@item.Image"/>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @item.Value.ToString("C")
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Active)
-            </td>
-            <td>
-              @this.FormatDocument(item.Vendor.VendorType, item.Vendor.Document)
-            </td>
-            <td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="~/img/@item.Image" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @item.Value.ToString("C")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Active)
+                </td>
+                <td>
+                    @this.FormatDocument(item.Vendor.VendorType, item.Vendor.Document)
+                </td>
+                <td>
                     <a class="btn btn-dark" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a class="btn btn-dark" asp-action="Details" asp-route-id="@item.Id">Details</a> |
                     <a class="btn btn-dark" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

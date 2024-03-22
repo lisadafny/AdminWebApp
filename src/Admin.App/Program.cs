@@ -1,3 +1,4 @@
+using Admin.App.Configurations;
 using Admin.App.Data;
 using Admin.Business.Interfaces;
 using Admin.Data.Context;
@@ -22,10 +23,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<ApplicationDbContext>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IVendorRepository, VendorRepository>();
-builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+
+builder.Services.ResolveDependencies();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

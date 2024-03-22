@@ -10,21 +10,18 @@ namespace Admin.App.Controllers
     [Authorize]
     public class VendorsController : BaseController
     {
-        private readonly IVendorRepository _vendorRepository;
-        private readonly IAddressRepository _addressRepository;
+        private readonly IVendorService _vendorService;
         private readonly IMapper _mapper;
-        public VendorsController(IVendorRepository vendorRepository, IAddressRepository addressRepository,
-        IMapper mapper)
+        public VendorsController(IVendorService vendorService, IMapper mapper)
         {
-            _vendorRepository = vendorRepository;
-            _addressRepository = addressRepository;
+            _vendorService = vendorService;
             _mapper = mapper;
         }
 
 
         public async Task<IActionResult> Index()
         {
-            return View(_mapper.Map<IEnumerable<VendorViewModel>>(await _vendorRepository.GetAll()));
+            return View(_mapper.Map<IEnumerable<VendorViewModel>>(await _vendorService.GetAll()));
         }
 
 
@@ -54,7 +51,7 @@ namespace Admin.App.Controllers
             if (!ModelState.IsValid) return View(vendorViewModel);
             var vendor = _mapper.Map<Vendor>(vendorViewModel);
 
-            await _vendorRepository.Add(vendor);
+            await _vendorService.Add(vendor);
             return RedirectToAction(nameof(Index));
 
         }
@@ -81,7 +78,7 @@ namespace Admin.App.Controllers
 
 
             var vendor = _mapper.Map<Vendor>(vendorViewModel);
-            await _vendorRepository.Update(vendor);
+            await _vendorService.Update(vendor);
             var result = new ReturnViewModel(true, $"Updated {vendor.Name} with success!");
             vendorViewModel.Result = result;
             return View(vendorViewModel);
@@ -108,21 +105,19 @@ namespace Admin.App.Controllers
 
             if (vendorViewModel == null) return NotFound();
 
-            await _addressRepository.Delete(vendorViewModel.Address.Id);
-
-            await _vendorRepository.Delete(id);
+            await _vendorService.Delete(id, vendorViewModel.Address.Id);
 
             return RedirectToAction(nameof(Index));
         }
 
         private async Task<VendorViewModel> GetVendorAddress(Guid id)
         {
-            return _mapper.Map<VendorViewModel>(await _vendorRepository.GetVendorAddress(id));
+            return _mapper.Map<VendorViewModel>(await _vendorService.GetVendorAddress(id));
         }
 
         private async Task<VendorViewModel> GetVendorProductsAddress(Guid id)
         {
-            return _mapper.Map<VendorViewModel>(await _vendorRepository.GetVendorProductsAddress(id));
+            return _mapper.Map<VendorViewModel>(await _vendorService.GetVendorProductsAddress(id));
         }
     }
 }
